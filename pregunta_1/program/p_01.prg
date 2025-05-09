@@ -1,0 +1,125 @@
+close @all
+
+'---------------------------------------------------------------
+' Normalidad Asintótica - T = 5
+'---------------------------------------------------------------
+
+wfcreate u 1 5000
+
+' Parámetros
+scalar T = 5
+scalar theta0 = 4
+'Importante incluir la semilla
+rndseed 123456
+
+' 1: Series de datos simulados de distribución exponencial
+for !i = 1 to T
+    series u!i = rnd      ' Uniformes entre (0,1)
+    series y!i = -theta0 * @log(1 - u!i)   ' Transformación a exponencial
+next
+
+' 2: Máxima verosimilitud
+series theta_hat = (y1 + y2 + y3 + y4 + y5)/T 'promedio 
+
+' 3: Estadístico estandarizado z_i
+series zi = @sqrt(T) * (theta_hat - theta0) / theta0
+
+' 4: Histograma de zi
+' se generó manualmente desde la ventana view
+
+' 5: Percentiles empíricos
+smpl @all
+scalar p01 = @quantile(zi, 0.01)
+scalar p025 = @quantile(zi, 0.025)
+scalar p05 = @quantile(zi, 0.05)
+scalar p10 = @quantile(zi, 0.10)
+scalar p90 = @quantile(zi, 0.90)
+scalar p95 = @quantile(zi, 0.95)
+scalar p975 = @quantile(zi, 0.975)
+scalar p99 = @quantile(zi, 0.99)
+
+''-------------------------------------------------------------
+' Normalidad Asintótica  T = 100
+'-------------------------------------------------------------
+close @all
+wfcreate u 1 5000
+
+' Parámetros
+scalar T = 100
+scalar theta0 = 4
+
+' 1. 100 series simuladas de distribución exponencial
+for !i = 1 to T
+    series u!i = rnd
+    series y!i = -theta0 * @log(1 - u!i)
+next
+
+' 2: promedio de cada muestra
+series theta_hat = 0
+for !i = 1 to T
+    series theta_hat = theta_hat + y!i
+next
+series theta_hat = theta_hat / T
+
+' 3: calculamos estadístico estandarizado z_i
+series zi = @sqrt(T) * (theta_hat - theta0) / theta0
+
+' 4: graficamos histograma
+' se generó manualmente desde la ventana view
+
+' 5: calculamos percentiles empíricos
+scalar p01 = @quantile(zi, 0.01)
+scalar p025 = @quantile(zi, 0.025)
+scalar p05 = @quantile(zi, 0.05)
+scalar p10 = @quantile(zi, 0.10)
+scalar p90 = @quantile(zi, 0.90)
+scalar p95 = @quantile(zi, 0.95)
+scalar p975 = @quantile(zi, 0.975)
+scalar p99 = @quantile(zi, 0.99)
+
+'-------------------------------------------------------------
+' Normalidad Asintótica - T = 1000
+'-------------------------------------------------------------
+close @all
+wfcreate u 1 5000
+
+' Parámetros
+scalar T = 1000
+scalar theta0 = 4
+
+' 1: creamos 1000 series simuladas de distribución exponencial
+for !i = 1 to T
+    series u!i = rnd
+    series y!i = -theta0 * @log(1 - u!i)
+next
+
+' 2. calculamos promedio de cada muestra
+series theta_hat = 0
+for !i = 1 to T
+    series theta_hat = theta_hat + y!i
+next
+series theta_hat = theta_hat / T
+
+' 3: calculamos estadístico estandarizado z_i
+series zi = @sqrt(T) * (theta_hat - theta0) / theta0
+
+' 4: graficamos histograma
+' se generó manualmente desde la ventana view
+
+' 5: calculamos percentiles empíricos
+scalar p01 = @quantile(zi, 0.01)
+scalar p025 = @quantile(zi, 0.025)
+scalar p05 = @quantile(zi, 0.05)
+scalar p10 = @quantile(zi, 0.10)
+scalar p90 = @quantile(zi, 0.90)
+scalar p95 = @quantile(zi, 0.95)
+scalar p975 = @quantile(zi, 0.975)
+scalar p99 = @quantile(zi, 0.99)
+
+' Comentarios
+' 
+' 1. El histograma con T = 5 muestra una distribución asimétrica hacia la derecha. Esto es esperable porque el tamaño muestral es pequeño. En cambio, con T = 1000, el  histograma se aproxima asintóticamente a una distribución norma.
+
+' 2. Segúb  los valores críticos simulados vs el teórico , a medida que T aumenta, los percentiles empíricos de z se acercan a los valores críticos de la distribución normal estándar
+
+
