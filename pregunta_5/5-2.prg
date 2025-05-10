@@ -16,7 +16,7 @@ next
 matrix(!n,6) res_cor
 !fila = 1
 
-' Estimamos regresi�n log(y_t) ~ c + trend, guardamos residuos y calculamos r1 a r6
+' Estimamos regresión log(y_t) ~ c + trend, guardamos residuos y calculamos r1 a r6
 for %i {%series}
 	
 	if %i = "BND" then
@@ -48,4 +48,28 @@ for %i {%series}
 next
 
 show tabla4
+
+
+
+' ===  PARA LA TABLA 5 ===
+
+
+
+' === Lista de series en log ===
+%ln_series = "ln_bnd ln_cpi ln_emp ln_gnp ln_ip ln_m ln_pcrgnp ln_prgnp ln_rgnp ln_rwg ln_sp500 ln_un ln_vel ln_wg"
+
+!i = 1
+for %var {%ln_series}
+  
+  ' Prueba ADF con constante y tendencia (opción trend)
+  ' Automáticamente con criterio Schwarz para elegir rezagos (usar aic o fixed también es posible)
+  adf({%var}, lags=auto, criterion=schwarz, maxlags=6, trend)
+
+  ' Mostrar resultado de forma ordenada
+  freeze(adf_!i) adf.output
+
+  !i = !i + 1
+next
+
+
 
